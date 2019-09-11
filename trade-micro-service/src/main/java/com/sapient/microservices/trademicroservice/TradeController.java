@@ -1,5 +1,8 @@
 package com.sapient.microservices.trademicroservice;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.List;
 
@@ -7,6 +10,8 @@ import javax.jms.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,12 +36,18 @@ public class TradeController {
 	private String queue;
 	
 	@GetMapping("/trade")
-	public List<TradeBean> buyTrade() {
+	public List<TradeBean> getAllTrade() {
 		//List<TradeBean> list = new ArrayList<>();
 		return tradingdao.getAllTarde();
 		
 	}
-	
+
+	@GetMapping("/trade/{id}")
+	public TradeBean getTarde(@PathVariable int id){
+
+		return tradingdao.findOne(id);
+
+	}
 	@PostMapping("/addtrade")
 	public String addTrade(@RequestBody TradeBean tradebean) {
 		
@@ -46,24 +57,23 @@ public class TradeController {
 		
 	}
 	
-	@PostMapping("/addtradetoqueuqe")
-	public String addTradetoqueue(@RequestBody TradeBean tradebean) {
-		
-		tradebean.setMarketPrice(tradingServiceProxy.getprice(tradebean.getCommodities()).getMarketPrice());
-		//this.jmsTemplate.convertAndSend(this.queue, "1");
-		tradingdao.saveTrade(tradebean);
-		return "Successfully added trade";
-		
-	}
 
 	
-	  @PostMapping("/addtradetoqueuqe1") public String
-	  addTradetoqueue1(@RequestBody TradeBean tradebean) {
+	  @PostMapping("/addtradetoqueuqe") public Resource<TradeResponse>
+	  addTradetoqueue(@RequestBody TradeBean tradebean) {
 	  
 	  tradebean.setMarketPrice(tradingServiceProxy.getprice(tradebean.
 	  getCommodities()).getMarketPrice());
 	  this.jmsTemplate.convertAndSend(this.queue,tradebean);
-	  tradingdao.saveTrade(tradebean); return "Successfully added trade";
+	  tradingdao.saveTrade(tradebean);
+	  TradeResponse tradeResponse = new TradeResponse("Success");
+	  Resource<TradeResponse> resource = new Resource<TradeResponse>(tradeResponse);
+	  ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getTarde(1));
+
+		resource.add(linkTo.withRel("trade-link"));		
+
+		return resource;
+	  
 	  
 	  }
 	  

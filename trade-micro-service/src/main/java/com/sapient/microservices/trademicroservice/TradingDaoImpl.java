@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class TradingDaoImpl implements TradingDao{
 
 static List<TradeBean> list = new ArrayList<>();
+private static int count = 0;
 	
 	static {
 		list.add(new TradeBean("Lorem","London","Aluminum",1560));
@@ -22,11 +23,34 @@ static List<TradeBean> list = new ArrayList<>();
 	}
 
 	@Override
-	public void saveTrade(TradeBean tradebean) {
+	public int saveTrade(TradeBean tradebean) {
+		
 		// TODO Auto-generated method stub
+		
+		if (tradebean.getId() == 0) {
+
+			tradebean.setId(++count);
+
+		}
+
 		list.add(tradebean);
+
+		return tradebean.getId();
+		
 		
 		
 	}
+	public TradeBean findOne(int id) {
 
+		for (TradeBean tradeBean : list) {
+
+			if (id == tradeBean.getId())
+
+				return tradeBean;
+
+		}
+
+		return null;
+
+	}
 }

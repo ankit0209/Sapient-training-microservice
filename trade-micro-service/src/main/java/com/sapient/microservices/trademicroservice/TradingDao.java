@@ -8,5 +8,6 @@ public interface TradingDao {
 
 	public List<TradeBean> getAllTarde();
 	
-	public void saveTrade(TradeBean tradebean);
+	public int saveTrade(TradeBean tradebean);
+	public TradeBean findOne(int id);
 }
