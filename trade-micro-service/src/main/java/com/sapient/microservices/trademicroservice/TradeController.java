@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sapient.microservice.model.TradeBean;
+
 @RestController
 public class TradeController {
 
@@ -64,8 +66,9 @@ public class TradeController {
 	  
 	  tradebean.setMarketPrice(tradingServiceProxy.getprice(tradebean.
 	  getCommodities()).getMarketPrice());
-	  this.jmsTemplate.convertAndSend(this.queue,tradebean);
 	  tradingdao.saveTrade(tradebean);
+	  this.jmsTemplate.convertAndSend(this.queue,tradebean);
+	 
 	  TradeResponse tradeResponse = new TradeResponse("Success");
 	  Resource<TradeResponse> resource = new Resource<TradeResponse>(tradeResponse);
 	  ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getTarde(1));

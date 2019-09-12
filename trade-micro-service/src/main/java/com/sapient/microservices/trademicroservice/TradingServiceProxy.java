@@ -5,6 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.sapient.microservice.model.TradeBean;
+
 @FeignClient(name="netflix-zull-gateway-server")
 
 @RibbonClient(name="market-data-service")

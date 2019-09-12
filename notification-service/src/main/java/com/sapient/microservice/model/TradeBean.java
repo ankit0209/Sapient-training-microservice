@@ -4,38 +4,35 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//counterparties, commodities ,location and market price
 @Entity
 @Table(name = "TRADEDATA")
-public class TradeDaoBean implements Serializable{
-	
+public class TradeBean implements Serializable {
+
 	@Id
-	//@GeneratedValue
 	private int id;
-	
+
 	@Column
 	private String counterParty;
-	
+
 	@Column
 	private String location;
-	
+
 	@Column
 	private String commodities;
-	
+
 	@Column
 	private int marketPrice;
-	
+
 	private String status;
 
-	public TradeDaoBean() {
-		
+	public TradeBean() {
+
 	}
-	
-	public TradeDaoBean(int id,String counterParty, String location, String commodities, int marketPrice) {
+
+	public TradeBean(int id, String counterParty, String location, String commodities, int marketPrice) {
 		super();
 		this.id = id;
 		this.counterParty = counterParty;
@@ -43,8 +40,6 @@ public class TradeDaoBean implements Serializable{
 		this.commodities = commodities;
 		this.marketPrice = marketPrice;
 	}
-	
-	
 
 	public int getId() {
 		return id;
@@ -85,8 +80,6 @@ public class TradeDaoBean implements Serializable{
 	public void setMarketPrice(int marketPrice) {
 		this.marketPrice = marketPrice;
 	}
-	
-	
 
 	public String getStatus() {
 		return status;
@@ -101,9 +94,5 @@ public class TradeDaoBean implements Serializable{
 		return "TradeBean [id=" + id + ", counterParty=" + counterParty + ", location=" + location + ", commodities="
 				+ commodities + ", marketPrice=" + marketPrice + ", status=" + status + "]";
 	}
-
-	
-	
-	
 
 }

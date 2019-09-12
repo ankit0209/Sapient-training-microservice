@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 
 import com.sapient.microservice.model.TradeDao;
-import com.sapient.microservice.model.TradeDaoBean;
+import com.sapient.microservice.model.TradeBean;
 @Component
 @EnableJms
 public class MessageConsumer {
@@ -18,10 +18,11 @@ public class MessageConsumer {
     @Autowired
     private TradeDao tradeDao;
     
-    //@JmsListener(destination = "test-queue")
+    
     @JmsListener(destination = "${jsa.activemq.queue}", containerFactory="jsaFactory")
-    public void listener(TradeDaoBean message){
+    public void listener(TradeBean message){
         logger.info("Message received {} ", message);
+        message.setStatus("Processed");
         tradeDao.save(message);
     }
 }
